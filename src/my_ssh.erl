@@ -26,6 +26,7 @@ ssh_send(Ip,Port,User,Password,Msg,TimeOut)->
 	    Reply={error,[Err,?MODULE,?FUNCTION_NAME,?LINE]};
 	{ok,ConRef,ChanId}->
 	    Reply=send(ConRef,ChanId,Msg,TimeOut),
+	    io:format("Reply ~p~n",[{Reply,?MODULE,?FUNCTION_NAME,?LINE}]),
 	    ssh:close(ConRef);
 	Reason ->
 	    Reply={error,[Reason,?MODULE,?FUNCTION_NAME,?LINE]}

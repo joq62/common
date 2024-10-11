@@ -71,7 +71,7 @@ clone(RepoGit)->
 	[]->
 	    ok;
 	Error->
-	    {error,["Failed to clone ",RepoGit]}
+	    {error,["Failed to clone ",RepoGit,Error]}
     end.
 
 %%--------------------------------------------------------------------

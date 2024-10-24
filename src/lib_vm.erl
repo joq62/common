@@ -13,6 +13,7 @@
 %% API
 
 -export([
+	 get_node/1,
 	 check_started/1,
 	 check_stopped/1
 
@@ -26,6 +27,9 @@
 %%% API
 %%%===================================================================
 
+get_node(NodeName)->
+    {ok,Host}=net:gethostname(),
+    list_to_atom(NodeName++"@"++Host).
 %%--------------------------------------------------------------------
 %% @doc
 %% 

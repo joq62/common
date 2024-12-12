@@ -50,11 +50,11 @@ call(ServerId,Msg,TimeOut)->
 %%--------------------------------------------------------------------
 cast(ServerId,Msg)->
     Self=self(),
-    case rpc:call(node(),global,send,[ServerId,{Self,Msg}]) of
+    case rpc:cast(node(),global,send,[ServerId,{Self,Msg}]) of
 	{badrpc,Reason}->
 	    {error,[badrpc,Reason]};
-	_Pid ->
-	    ok
+	Result->
+	    Result
     end.
 
 

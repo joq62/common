@@ -31,7 +31,7 @@ call(ServerId,Msg,TimeOut)->
     Self=self(),
     case rpc:call(node(),global,send,[ServerId,{Self,Msg}],5000) of
 	{badrpc,Reason}->
-	    {error,[badrpc,Reason]};
+	    {error,[?MODULE,?LINE,badrpc,Reason]};
 	Pid ->
 	    ok,
 	    receive
@@ -52,7 +52,7 @@ cast(ServerId,Msg)->
     Self=self(),
     case rpc:cast(node(),global,send,[ServerId,{Self,Msg}]) of
 	{badrpc,Reason}->
-	    {error,[badrpc,Reason]};
+	    {error,[?MODULE,?LINE,badrpc,Reason]};
 	Result->
 	    Result
     end.

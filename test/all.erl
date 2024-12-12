@@ -53,9 +53,10 @@ test1()->
     {error,["RepoDir doesnt exists, need to clone"]}=lib_git:is_repo_updated(?RepoDir),
     ok=lib_git:clone(?GitPath),
     true=lib_git:is_repo_updated(?RepoDir),
-    {error,["Failed to clone ","https://github.com/joq62/application_specs.git"]}=lib_git:clone(?GitPath),
+    {error,["Failed to clone ","https://github.com/joq62/application_specs.git","fatal: destination path 'application_specs' already exists and is not an empty directory.\n"]}=lib_git:clone(?GitPath),
+  %  {error,["Failed to clone ","https://github.com/joq62/application_specs.git"]}=lib_git:clone(?GitPath),
     true=lib_git:is_repo_updated(?RepoDir),
-    {error,["Failed to clone ","https://github.com/joq62/glurk.git"]}=lib_git:clone("https://github.com/joq62/glurk.git"),
+    {error,["Failed to clone ","https://github.com/joq62/glurk.git","fatal: could not read Username for 'https://github.com': No such device or address\n"]}=lib_git:clone("https://github.com/joq62/glurk.git"),
     
     ok.
 
@@ -67,5 +68,5 @@ test1()->
 
 setup()->
     io:format("Start ~p~n",[{?MODULE,?FUNCTION_NAME}]),
-
+    
     ok.

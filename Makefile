@@ -18,7 +18,7 @@ all:
 	rm -rf rebar.lock
 	#INFO: Compile application
 	rm -rf common_include;
-	cp -r ~/erlang/simple_system/common_include .
+	cp -r ~/erlang/common_include .
 	rebar3 compile
 	rm -rf _build*;
 	git status
@@ -69,7 +69,7 @@ eunit:
 	#INFO: Creating eunit test code using test_ebin dir;
 	mkdir test_ebin;
 	rm -rf common_include;
-	cp -r ~/erlang/simple_system/common_include .
+	cp -r ~/erlang/common_include .
 	#rm test/dependent_apps.erl;
 	#cp /home/joq62/erlang/dev_support/dependent_apps.erl test;
 	erlc -I include -I common_include -o test_ebin test/*.erl;

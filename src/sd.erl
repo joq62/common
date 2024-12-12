@@ -14,6 +14,8 @@
 
 
 -export([
+	 call_control/2,
+	 cast_control/1,
 	 cast/2,
 	 call/3
 	 
@@ -22,6 +24,46 @@
 %%%===================================================================
 %%% API
 %%%===================================================================
+%%--------------------------------------------------------------------
+%% @doc
+%% 
+%% @end
+%%--------------------------------------------------------------------
+call_control(Msg,TimeOut)->
+     {ok,Hostname}=net:gethostname(),
+    ControlId=list_to_atom(atom_to_list(control)++"@"++Hostname),
+    case global:whereis_name(ControlId) of
+	undefined->
+	    {error,[undefined,ControlId]};
+	Pid->
+	    Self=self(),
+	    Pid!{Self,Msg},
+	    receive
+		{Pid,Reply}->
+		    Reply
+	    after 
+		TimeOut ->
+		    {error,["Timeout in call",ControlId,Msg,TimeOut]}
+	    end
+    end.
+
+%%--------------------------------------------------------------------
+%% @doc
+%% 
+%% @end
+%%--------------------------------------------------------------------
+cast_control(Msg)->
+     {ok,Hostname}=net:gethostname(),
+    ControlId=list_to_atom(atom_to_list(control)++"@"++Hostname),
+    case global:whereis_name(ControlId) of
+	undefined->
+	    {error,[undefined,ControlId]};
+	Pid->
+	    Self=self(),
+	    Pid!{Self,Msg},
+	    true
+    end.
+
 %%--------------------------------------------------------------------
 %% @doc
 %% 

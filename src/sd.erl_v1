@@ -28,12 +28,18 @@
 %% @end
 %%--------------------------------------------------------------------
 call(ServerId,Msg,TimeOut)->
-    case global:whereis_name(ServerId) of
+    case global:whereis_name of
 	undefined->
 	    {error,[undefined,ServerId]};
 	Pid->
-	    Self=self(),
 	    Pid!{Self,Msg},
+	    
+    Self=self(),
+    case rpc:call(node(),global,send,[ServerId,{Self,Msg}],5000) of
+	{badrpc,Reason}->
+	    {error,[?MODULE,?LINE,badrpc,Reason]};
+	Pid ->
+	    ok,
 	    receive
 		{Pid,Reply}->
 		    Reply

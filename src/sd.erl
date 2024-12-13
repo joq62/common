@@ -14,8 +14,7 @@
 
 
 -export([
-	 call_control/2,
-	 cast_control/1,
+       
 	 cast/2,
 	 call/3
 	 
@@ -29,46 +28,17 @@
 %% 
 %% @end
 %%--------------------------------------------------------------------
-call_control(Msg,TimeOut)->
-     {ok,Hostname}=net:gethostname(),
-    ControlId=list_to_atom(atom_to_list(control)++"@"++Hostname),
-    case global:whereis_name(ControlId) of
-	undefined->
-	    {error,[undefined,ControlId]};
-	Pid->
-	    Self=self(),
-	    Pid!{Self,Msg},
-	    receive
-		{Pid,Reply}->
-		    Reply
-	    after 
-		TimeOut ->
-		    {error,["Timeout in call",ControlId,Msg,TimeOut]}
-	    end
-    end.
 
-%%--------------------------------------------------------------------
-%% @doc
-%% 
-%% @end
-%%--------------------------------------------------------------------
-cast_control(Msg)->
-     {ok,Hostname}=net:gethostname(),
-    ControlId=list_to_atom(atom_to_list(control)++"@"++Hostname),
-    case global:whereis_name(ControlId) of
-	undefined->
-	    {error,[undefined,ControlId]};
-	Pid->
-	    Self=self(),
-	    Pid!{Self,Msg},
-	    true
-    end.
+call(control,Msg,TimeOut)->
+    {ok,Hostname}=net:gethostname(),
+    ServerId=list_to_atom(atom_to_list(control)++"@"++Hostname),
+    call(ServerId,Msg,TimeOut);
+call(log,Msg,TimeOut)->
+    {ok,Hostname}=net:gethostname(),
+    ServerId=list_to_atom(atom_to_list(log)++"@"++Hostname),
+    call(ServerId,Msg,TimeOut);
 
-%%--------------------------------------------------------------------
-%% @doc
-%% 
-%% @end
-%%--------------------------------------------------------------------
+
 call(ServerId,Msg,TimeOut)->
     case global:whereis_name(ServerId) of
 	undefined->
@@ -90,6 +60,16 @@ call(ServerId,Msg,TimeOut)->
 %% 
 %% @end
 %%--------------------------------------------------------------------
+
+cast(control,Msg)->
+    {ok,Hostname}=net:gethostname(),
+    ServerId=list_to_atom(atom_to_list(control)++"@"++Hostname),
+    cast(ServerId,Msg);
+cast(log,Msg)->
+    {ok,Hostname}=net:gethostname(),
+    ServerId=list_to_atom(atom_to_list(log)++"@"++Hostname),
+    cast(ServerId,Msg);
+
 cast(ServerId,Msg)->
     Self=self(),
     case rpc:cast(node(),global,send,[ServerId,{Self,Msg}]) of

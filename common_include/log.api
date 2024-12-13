@@ -8,15 +8,13 @@
 
 %%%% Log Api -----------------------------------------------------------------------------
 
--define(LOG_NOTICE(Msg,Data),
-	{ok,ZZ}=net:gethostname(),
-	sd:cast(list_to_atom("control"++"@"++ZZ),{log,notice,[Msg,Data,?Sender]})).
+%-define(LOG_NOTICE(Msg,Data),sd:call(log,{notice,[Msg,Data,?Sender]},5000).
 %-define(LOG_WARNING(Msg,Data),sd:cast(control,{log,warning,[Msg,Data,?Sender]})).
 %-define(LOG_ALERT(Msg,Data),sd:cast(control,{log,alert,[Msg,Data,?Sender]})).
 
 %-define(LOG_NOTICE(Msg,Data),sd:call(control,a,5000)).
 
-%-define(LOG_NOTICE(Msg,Data),sd:call(control,{log,notice,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).	
+%-define(LOG_NOTICE(Msg,Data),sd:call(log,{notice,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).	
 
 -define(LOG_WARNING(Msg,Data),sd:call(control,{log,warning,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).
 -define(LOG_ALERT(Msg,Data),sd:call(control,{log,alert,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).

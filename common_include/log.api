@@ -14,7 +14,7 @@
 
 %-define(LOG_NOTICE(Msg,Data),sd:call(control,a,5000)).
 
-%-define(LOG_NOTICE(Msg,Data),sd:call(log,{notice,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).	
+-define(LOG_NOTICE(Msg,Data),sd:cast(log,{notice,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]})).	
 
 -define(LOG_WARNING(Msg,Data),sd:call(control,{log,warning,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).
 -define(LOG_ALERT(Msg,Data),sd:call(control,{log,alert,[Msg,Data,node(),self(),?MODULE,?FUNCTION_NAME,?LINE,erlang:timestamp()]},5000)).
